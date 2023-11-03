@@ -130,8 +130,6 @@ Circle createCircle() {
 }
 When objects are explicitly copied using the copy constructor, as in:
 
-cpp
-Copy code
 Circle originalCircle;
 Circle anotherCopiedCircle(originalCircle); // Copy constructor is invoked here
 The copy constructor is used to create a new object that is a duplicate of an existing object, allowing you to perform deep copies of the object's data. It is a critical function for proper object initialization and copying in C++.
