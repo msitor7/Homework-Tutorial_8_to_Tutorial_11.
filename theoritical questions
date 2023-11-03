@@ -1,0 +1,148 @@
+Questions (Homework 2)
+
+1.	Describe briefly what a static/dynamic library is and some reasons to use one over the other
+Static Library:
+•	A static library, often called an "archive" or "lib," bundles object files or functions into a single binary file.
+•	Linked at compile-time, it incorporates code directly into the executable.
+Dynamic Library:
+•	A dynamic library, known as a "shared library" or "DLL," contains compiled code loaded and executed at runtime by multiple programs.
+•	Linked at runtime, it's shared among all applications.
+On one hand static libraries are way simpler and also slightly faster tan Dynamic linking. On the other hand Dynamic libraries code is reusable as it ca be shared in multiple applications and also the efficiency of the resource is way higher.
+
+1.	What flags would you need to pass to the linker to tell it to look for library files in a directory called /some/dir/lib and to link to a library file called libfmt-3.2.0.so?
+To instruct the linker to look for library files in a specific directory and link to a library file, you would typically use the -L flag to specify the library directory and the -l flag to specify the library name. Here's how you would pass these flags to the linker (-L/some/dir/lib -lfmt-3.2.0)
+2.	Describe the four parts of a function definition. What parts of the definition constitute the function's signature?
+In a function definition, there are typically four parts:
+1.	Return Type: This is the data type that specifies the type of value that the function will return to the caller. It's usually the first part of the function definition. For example, in the function definition int add(int a, int b), the return type is int.
+2.	Function Name: This is the identifier that names the function. It follows the return type and is used to call the function later in your code. In the example int add(int a, int b), the function name is add.
+3.	Parameter List (Parameters/Arguments): This part defines the variables or values that the function takes as input. Parameters are enclosed in parentheses and separated by commas. In the function definition int add(int a, int b), the parameter list is (int a, int b). These parameters constitute the function's signature and define how the function can be called. The order, number, and data types of parameters are important parts of the signature.
+4.	Function Body: This part contains the actual code that the function executes. It's enclosed in curly braces {} and contains the statements that perform the operations of the function.
+The function's signature includes the return type, function name, and the parameter list. 
+3.	Given an object like
+
+int x{3};
+1.	How would you get its address?
+2.	How would you write the type of a pointer to the object?
+Write the class declaration for a 2D point class consisting of an x and a y coordinate a destructor, and two constructors  
+To get the address of an object like int x{3}, you can use the address-of operator &. Here's how you get the address and write the type of a pointer to the object:
+int x{3}; int* ptr = &x; // Get the address of 'x' and store it in a pointer variable 'ptr' 
+The type of a pointer to the object x would be int*, which is a pointer to an integer. You can declare a pointer variable of this type like this:
+int* ptr; // Pointer to an integer 
+The type of a pointer is the base type followed by an asterisk *. In this case, the base type is int, so the pointer type is int*.
+
+Questions (Homework 1)
+
+1.	Describe briefly the role of the three different steps in the compilation process
+The compilation process in C and C++ typically consists of three main steps: preprocessing, compiling, and linking. Here's a brief description of the role of each step:
+
+Preprocessing:
+Role: The preprocessing step is the first stage of compilation, where the source code is prepared for compilation by the actual compiler.
+Actions:
+In this step, the preprocessor performs tasks such as including header files using #include directives.
+It replaces macro definitions with their expanded code using #define.
+Conditional compilation directives like #ifdef, #ifndef, #endif, and #ifdef are processed to exclude or include portions of code.
+Output: The output of preprocessing is an expanded source code file with all the preprocessor directives resolved.
+Compiling:
+
+Role: The compiling step takes the preprocessed source code and translates it into assembly code or machine code.
+Actions:
+The compiler checks the syntax and semantics of the code for errors and produces object files for each source file. These object files contain machine code or intermediate representations of the code.
+Type checking, optimization, and code generation are performed during this phase.
+Output: The output of compiling is one or more object files that contain the translated code but may still have unresolved references to external functions or symbols.
+Linking:
+
+Role: The linking step combines object files and resolves external references to create an executable program or library.
+Actions:
+The linker takes all the object files and libraries and combines them into a single executable or library file.
+It resolves external references by linking them to the corresponding definitions in other object files or libraries. This includes functions and variables defined in other source files or libraries.
+Output: The final output of linking is the executable program or library, which can be run or used by other programs.
+These three steps together form the compilation process, starting with the raw source code and ending with an executable program or a library. The process ensures that the code is translated into a format that the computer can execute and resolves all dependencies, making it ready for execution.
+
+2.	In the the following code snippet, give the order that the objects are destroyed. Are there any objects that aren't destroyed?
+
+
+#include<iostream>
+#include<string> 
+void print_number(int number) { std::cout << number << std::endl; }
+
+int main() {
+
+  int i{0};
+  { int j{1}; }
+
+  print_number(i);
+  auto number_on_heap { new int{3}};
+  auto leaked_string{new std::string{"I'm being leaked!"}};
+  delete number_on_heap;
+}
+
+
+In the given code snippet, objects are destroyed in the following order:
+
+1. `int j{1};` - The object `j` is created within a block scope, and it goes out of scope at the closing brace `}`. It is destroyed when it goes out of scope.
+
+2. `auto number_on_heap { new int{3}};` - The object `number_on_heap` is created on the heap using dynamic memory allocation. It is not automatically destroyed when it goes out of scope, and it needs to be explicitly deleted.
+
+3. `auto leaked_string{new std::string{"I'm being leaked!"}};` - The object `leaked_string` is created on the heap using dynamic memory allocation. Like the previous object, it is not automatically destroyed when it goes out of scope and becomes a memory leak.
+
+4. At the end of `main`, the `i` variable goes out of scope, but it is automatically destroyed.
+
+However, it's important to note that the objects created on the heap (`number_on_heap` and `leaked_string`) are not explicitly destroyed within the `main` function. To avoid memory leaks, you should use `delete` for each dynamically allocated object before the program exits. In this case, you have deleted `number_on_heap` using `delete`, but `leaked_string` remains leaked.
+
+3.	Given a source file called homework.cxx. What command would you run to
+1.	Compile it into an object file called homework.o, with warnings enabled
+2.	Compile it and link it into an executable called homework, with warnings enabled
+To compile a source file called homework.cxx into an object file named homework.o with warnings enabled, you can use the following command:
+
+“g++ -Wall -c homework.cxx -o homework.o”
+Explanation of the flags and options:
+
+-Wall: This flag enables most warning messages, helping you catch potential issues in your code during compilation.
+-c: This flag tells the compiler to generate an object file without linking. It's used to create homework.o.
+homework.cxx: This is the source file you want to compile.
+-o homework.o: This option specifies the output file name, which is homework.o.
+To compile and link the source file into an executable named homework with warnings enabled, you can use the following command:
+“g++ -Wall homework.cxx -o homework”
+In this case, you omit the -c flag because you want to create an executable. The -Wall flag is still used to enable warning messages during compilation.
+
+4.	What type of function is declared here? When is it invoked?
+class Circle {
+  public:
+    Circle(const Circle& other);
+};
+The function declared in the code you provided is a copy constructor for the Circle class. A copy constructor is a special member function in C++ that is invoked when a new object of the class is being created as a copy of an existing object of the same class.
+
+The copy constructor is invoked in the following situations:
+
+When a new object is created as a copy of an existing object, such as:
+
+Circle originalCircle;
+Circle copiedCircle = originalCircle; // Copy constructor is invoked here
+When an object is passed by value to a function or returned by value from a function, resulting in a copy being made:
+
+void someFunction(Circle c) {
+    // Copy constructor is invoked when 'c' is created as a copy of the argument
+}
+
+Circle createCircle() {
+    Circle c;
+    return c; // Copy constructor is invoked when 'c' is returned
+}
+When objects are explicitly copied using the copy constructor, as in:
+
+cpp
+Copy code
+Circle originalCircle;
+Circle anotherCopiedCircle(originalCircle); // Copy constructor is invoked here
+The copy constructor is used to create a new object that is a duplicate of an existing object, allowing you to perform deep copies of the object's data. It is a critical function for proper object initialization and copying in C++.
+
+1.	Explain RAII
+RAII stands for "Resource Acquisition Is Initialization," and it is a C++ programming technique that helps manage resources (such as memory, file handles, or network connections) in a safe and efficient way. The RAII principle ties the lifetime of a resource to the scope of an object. Here's how it works:
+
+Resource Acquisition: When you create an object, that object's constructor is responsible for acquiring the necessary resources, such as dynamically allocated memory, file handles, or network connections.
+
+Initialization: During the construction of the object, the resource is properly initialized, and the necessary setup is performed to make the resource ready for use.
+
+Resource Release: When the object goes out of scope (i.e., its lifetime ends), whether due to normal program flow or an exception, the object's destructor is called automatically. In the destructor, the resource is released, closed, or deallocated. This ensures that resources are always properly cleaned up, even in the presence of exceptions.
+
+
